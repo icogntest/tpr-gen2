@@ -56,3 +56,15 @@ thumbs.db
 # Editor-based Rest Client
 .idea/httpRequests
 /.idea/csv-plugin.xml
+
+### Above is all default stuff
+
+# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
+# If you're not using Zero-Installs:
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
