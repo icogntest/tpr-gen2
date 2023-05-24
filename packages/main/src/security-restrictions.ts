@@ -20,6 +20,9 @@ const ALLOWED_ORIGINS_AND_PERMISSIONS = new Map<string, Set<Permission>>(
     : [],
 );
 
+ALLOWED_ORIGINS_AND_PERMISSIONS.set('http://localhost:3000', new Set());
+console.log(ALLOWED_ORIGINS_AND_PERMISSIONS);
+
 /**
  * A list of origins that you allow open IN BROWSER.
  * Navigation to the origins below is only possible if the link opens in a new window.

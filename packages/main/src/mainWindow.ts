@@ -36,7 +36,8 @@ async function createWindow() {
     /**
      * Load from the Vite dev server for development.
      */
-    await browserWindow.loadURL(import.meta.env.VITE_DEV_SERVER_URL);
+    // await browserWindow.loadURL(import.meta.env.VITE_DEV_SERVER_URL);
+    await browserWindow.loadURL('http://localhost:3000');
   } else {
     /**
      * Load from the local file system for production and test.
