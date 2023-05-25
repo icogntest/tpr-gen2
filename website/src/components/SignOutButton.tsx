@@ -1,6 +1,6 @@
 'use client';
 
-import { signIn, signOut } from 'next-auth/react';
+import {signIn, signOut} from 'next-auth/react';
 
 type SignOutButtonProps = {
   user?: {
@@ -8,11 +8,11 @@ type SignOutButtonProps = {
   };
 };
 
-function SignOutButton({ user }: SignOutButtonProps) {
+function SignOutButton({user}: SignOutButtonProps) {
   if (user) {
     return (
-      <div style={{ display: 'flex' }}>
-        <div style={{ marginRight: '16px' }}>{user.name}</div>
+      <div style={{display: 'flex'}}>
+        <div style={{marginRight: '16px'}}>{user.name}</div>
         <button
           onClick={() => {
             signOut();

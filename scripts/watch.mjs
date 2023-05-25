@@ -1,8 +1,12 @@
 #!/usr/bin/env node
 
-import {build, createServer} from 'vite';
+process.env.NODE_ENV = 'development';
+
+import {build} from 'vite';
 import electronPath from 'electron';
 import {spawn} from 'child_process';
+import {execa} from 'execa';
+import path from 'path';
 
 /** @type 'production' | 'development'' */
 const mode = (process.env.MODE = process.env.MODE || 'development');
@@ -16,8 +20,9 @@ const logLevel = 'warn';
  * @param {import('vite').ViteDevServer} watchServer Renderer watch server instance.
  * Needs to set up `VITE_DEV_SERVER_URL` environment variable from {@link import('vite').ViteDevServer.resolvedUrls}
  */
-function setupMainPackageWatcher({resolvedUrls}) {
-  process.env.VITE_DEV_SERVER_URL = resolvedUrls.local[0];
+function setupMainPackageWatcher() {
+  // process.env.VITE_DEV_SERVER_URL = resolvedUrls.local[0];
+  process.env.VITE_DEV_SERVER_URL = 'http://localhost:3000';
 
   /** @type {ChildProcess | null} */
   let electronApp = null;
@@ -36,21 +41,24 @@ function setupMainPackageWatcher({resolvedUrls}) {
     plugins: [
       {
         name: 'reload-app-on-main-package-change',
+        // Note: removed code related to killing this watch process when you
+        // manually close the electron window since that causes massive problems
+        // on Windows since the processes are not killed gracefully.
         writeBundle() {
-          /** Kill electron if process already exist */
-          if (electronApp !== null) {
-            electronApp.removeListener('exit', process.exit);
+          // Kill electron if process already exists
+          if (electronApp != null) {
+            // Note that this is not a graceful exit (on Windows at least). As
+            // such, changes to cookies aren't saved like they are when you
+            // close the app by clicking the X. Possible they are never saved
+            // when the app is closed by a signal regardless of OS.
             electronApp.kill('SIGINT');
             electronApp = null;
           }
 
-          /** Spawn new electron process */
+          // Spawn new electron process
           electronApp = spawn(String(electronPath), ['--inspect', '.'], {
             stdio: 'inherit',
           });
-
-          /** Stops the watch script when the application has been quit */
-          electronApp.addListener('exit', process.exit);
         },
       },
     ],
@@ -63,7 +71,7 @@ function setupMainPackageWatcher({resolvedUrls}) {
  * @param {import('vite').ViteDevServer} watchServer Renderer watch server instance.
  * Required to access the web socket of the page. By sending the `full-reload` command to the socket, it reloads the web page.
  */
-function setupPreloadPackageWatcher({ws}) {
+function setupPreloadPackageWatcher() {
   return build({
     mode,
     logLevel,
@@ -75,30 +83,30 @@ function setupPreloadPackageWatcher({ws}) {
        */
       watch: {},
     },
-    plugins: [
-      {
-        name: 'reload-page-on-preload-package-change',
-        writeBundle() {
-          ws.send({
-            type: 'full-reload',
-          });
-        },
-      },
-    ],
+    // Disabled plugin which reloads the webpage when editing the preload
+    // script. This would be pretty involved to get working, and it is not worth
+    // it since you probably will never update the preload script (and if you do
+    // you can just reload the page manually).
   });
 }
 
-/**
- * Dev server for Renderer package
- * This must be the first,
- * because the {@link setupMainPackageWatcher} and {@link setupPreloadPackageWatcher}
- * depend on the dev server properties
- */
-const rendererWatchServer = await createServer({
-  mode,
-  logLevel,
-  configFile: 'packages/renderer/vite.config.js',
-}).then(s => s.listen());
+function startNextServer() {
+  const execaOptions = {
+    // cwd: process.cwd(),
+    cwd: path.join(process.cwd(), 'website'),
+    stdio: 'inherit',
+    preferLocal: true,
+  };
 
-await setupPreloadPackageWatcher(rendererWatchServer);
-await setupMainPackageWatcher(rendererWatchServer);
+  // '.' dir is referring to 'website' dir based on execaOptions cwd
+  return execa('next', ['.'], execaOptions);
+}
+
+async function dev() {
+  startNextServer();
+
+  await setupPreloadPackageWatcher();
+  await setupMainPackageWatcher();
+}
+
+dev();
