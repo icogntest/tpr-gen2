@@ -3,6 +3,9 @@
   "description": "Secure boilerplate for Electron app based on Vite",
   "version": "1.0.2",
   "private": true,
+  "workspaces": [
+    "website"
+  ],
   "author": {
     "email": "kozackunisoft@gmail.com",
     "name": "Alex Kozack",
