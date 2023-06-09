@@ -17,6 +17,28 @@ module.exports = async function () {
       buildResources: 'buildResources',
     },
     files: ['packages/**/dist/**'],
+    extraResources: [
+      // Have to put this in extraResources and lead with `app/` so we can have
+      // the `node_modules` folder get copied over as well. Electron builder
+      // will not copy that folder based on its name when this is put in the
+      // `files` option.
+
+      // See: https://nextjs.org/docs/pages/api-reference/next-config-js/output
+      // TODO: need to handle copying the public folder correctly once making
+      // use of it.
+      {
+        from: 'website/.next/standalone',
+        to: 'standalone-website',
+      },
+      {
+        from: 'website/.next/static',
+        to: 'standalone-website/website/.next/static',
+      },
+
+      // have to keep this outside of the ASAR. Really really does not want to
+      // fork when the file is in the ASAR.
+      'packages/server-starter/**',
+    ],
     extraMetadata: {
       version: getVersion(),
     },

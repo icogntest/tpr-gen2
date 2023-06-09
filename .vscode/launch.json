@@ -8,6 +8,19 @@
       "skipFiles": ["<node_internals>/**"],
       "program": "${workspaceFolder}\\scripts\\watch.mjs",
       "autoAttachChildProcesses": true
+    },
+    {
+      "name": "Next.js: debug server-side",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "yarn dev",
+      "cwd": "${workspaceFolder}/website"
+    },
+    {
+      "name": "Next.js: debug client-side",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000"
     }
   ]
 }

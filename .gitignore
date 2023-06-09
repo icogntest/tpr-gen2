@@ -68,3 +68,7 @@ thumbs.db
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+
+/volume
+/secrets

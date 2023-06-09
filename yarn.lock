@@ -2609,6 +2609,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dotenv@npm:^16.1.4":
+  version: 16.1.4
+  resolution: "dotenv@npm:16.1.4"
+  checksum: c1b2e13df4d374a6a29e134c56c7b040ba20500677fe8b9939ea654f3b3badb9aaa0b172e40e4dfa1233a4177dbb8fb79d84cc79a50ac9c9641fe2ad98c14876
+  languageName: node
+  linkType: hard
+
 "dotenv@npm:^9.0.2":
   version: 9.0.2
   resolution: "dotenv@npm:9.0.2"
@@ -7416,6 +7423,7 @@ __metadata:
     "@types/react-dom": 18.2.4
     autoprefixer: 10.4.14
     bcrypt: ^5.1.0
+    dotenv: ^16.1.4
     eslint: 8.40.0
     eslint-config-next: 13.4.1
     execa: ^7.1.1

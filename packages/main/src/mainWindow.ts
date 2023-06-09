@@ -1,5 +1,6 @@
-import {app, BrowserWindow} from 'electron';
-import {join, resolve} from 'node:path';
+import {app, BrowserWindow, session} from 'electron';
+import {join, resolve, dirname} from 'node:path';
+import {fork} from 'node:child_process';
 
 async function createWindow() {
   const browserWindow = new BrowserWindow({
@@ -37,8 +38,40 @@ async function createWindow() {
      * Load from the Vite dev server for development.
      */
     // await browserWindow.loadURL(import.meta.env.VITE_DEV_SERVER_URL);
-    await browserWindow.loadURL('http://localhost:3000');
+
+    const url = 'http://localhost:3000';
+
+    // Set cookie during development so the server can know whether it is
+    // serving a browser client or electron client. This is used during
+    // development so we can develop for both environments at the same time with
+    // a single Next server. If this becomes too hard to manage, we can always
+    // change it such that you have to pick which one you want to develop for
+    // when you start the server.
+    const cookie = {url, name: 'electron-development', value: 'electron-development'};
+    await session.defaultSession.cookies.set(cookie);
+
+    await browserWindow.loadURL(url);
   } else {
+    // console.log('appPath');
+    // console.log(app.getAppPath());
+    const appPathDirName = dirname(app.getAppPath());
+    // console.log('appPathDirName');
+    // console.log(appPathDirName);
+    // console.log('');
+
+    // const childProc = fork('server.js', [], {
+    fork('server.js', [], {
+      cwd: join(appPathDirName, 'standalone-website/website'),
+      env: {
+        ...process.env,
+        IS_ELECTRON: 'true',
+      },
+    });
+
+    // childProc.on('message', function (message) {
+    //   console.log('Message from Child process : ' + message);
+    // });
+
     /**
      * Load from the local file system for production and test.
      *
