@@ -1,11 +1,8 @@
 import {app, BrowserWindow, session} from 'electron';
 import {join, resolve, dirname} from 'node:path';
 import {fork} from 'node:child_process';
-import prepareDb from './prisma/prepareDb';
 
 async function createWindow() {
-  await prepareDb();
-
   const browserWindow = new BrowserWindow({
     show: false, // Use the 'ready-to-show' event to show the instantiated BrowserWindow.
     webPreferences: {

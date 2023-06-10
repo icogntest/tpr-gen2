@@ -1,5 +1,7 @@
 // `import.meta.env` provided by Vite. Set to `process.env.NODE_ENV` since we
 // expect it to be there.
+process.env.NODE_ENV = import.meta.env.MODE;
+console.log(`process.env.NODE_ENV:${process.env.NODE_ENV}`);
 
 import {app} from 'electron';
 import './security-restrictions';
@@ -7,6 +9,9 @@ import {restoreOrCreateWindow} from '/@/mainWindow';
 import {platform} from 'node:process';
 import fs from 'node:fs';
 import path from 'node:path';
+import forkWebsiteProcess from './forkWebsiteProcess';
+import processManager from './processManager';
+import prepareDb from './prisma/prepareDb';
 
 const volumePath = path.join(app.getPath('userData'), 'volume');
 console.log(`volumePath:${volumePath}`);
@@ -20,9 +25,6 @@ if (!fs.existsSync(volumePath)) {
  */
 const isSingleInstance = app.requestSingleInstanceLock();
 console.log(`isSingleInstance:${isSingleInstance}`);
-
-process.env.NODE_ENV = import.meta.env.MODE;
-console.log(`process.env.NODE_ENV:${process.env.NODE_ENV}`);
 
 if (!isSingleInstance) {
   app.quit();
@@ -40,6 +42,7 @@ app.disableHardwareAcceleration();
  */
 app.on('window-all-closed', () => {
   if (platform !== 'darwin') {
+    processManager.killAll();
     app.quit();
   }
 });
@@ -49,12 +52,21 @@ app.on('window-all-closed', () => {
  */
 app.on('activate', restoreOrCreateWindow);
 
+async function onAppReady() {
+  // TODO: maybe show a loading window if actually need to run migrations?
+  await prepareDb();
+  forkWebsiteProcess();
+
+  restoreOrCreateWindow();
+}
+
 /**
  * Create the application window when the background process is ready.
  */
 app
   .whenReady()
-  .then(restoreOrCreateWindow)
+  // .then(restoreOrCreateWindow)
+  .then(onAppReady)
   .catch(e => console.error('Failed create window:', e));
 
 /**

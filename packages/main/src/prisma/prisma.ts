@@ -3,6 +3,7 @@
 import {PrismaClient} from '@prisma/client';
 import {dbUrl, mePath, qePath, prismaPath} from './prismaConstants';
 import {fork} from 'child_process';
+import processManager from '../processManager';
 
 console.log('DB URL', dbUrl);
 console.log('QE Path', qePath);
@@ -65,6 +66,7 @@ export async function runPrismaCommand({
         },
         stdio: 'pipe',
       });
+      processManager.addChildProcess(child, 'prisma-cmd-runner');
 
       child.on('message', msg => {
         console.log(msg);
