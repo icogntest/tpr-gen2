@@ -1,3 +1,6 @@
+const fs = require('fs-extra');
+const path = require('node:path');
+
 /**
  * TODO: Rewrite this config to ESM
  * But currently electron-builder doesn't support ESM configs
@@ -94,6 +97,26 @@ module.exports = async function () {
     ],
     extraMetadata: {
       version: getVersion(),
+    },
+    afterPack: async function (context) {
+      // At the very least, extraResources are not available in the beforePack
+      // hook.
+      console.log('\nafterPack, removing certain files...');
+      // TODO: probably need to revisit this, especially when packing or for
+      // different operating systems.
+      const filesToDelete = ['resources/node_modules/.prisma/client/query_engine-windows.dll.node'];
+
+      filesToDelete.forEach(file => {
+        const resolvedFile = path.join(context.appOutDir, file);
+        if (fs.existsSync(resolvedFile)) {
+          console.log(`Removing "${resolvedFile}"...`);
+          fs.rmSync(resolvedFile);
+        } else {
+          console.log(`Did not find "${resolvedFile}" to remove...`);
+        }
+      });
+
+      console.log('');
     },
 
     // Specify linux target just for disabling snap compilation
