@@ -33,6 +33,9 @@ const config = {
       output: {
         entryFileNames: '[name].cjs',
       },
+      // Since these prisma packages don't exist until we are packaging for
+      // production.
+      external: ['@prisma/client', '.prisma'],
     },
     emptyOutDir: true,
     reportCompressedSize: false,

@@ -38,6 +38,59 @@ module.exports = async function () {
       // have to keep this outside of the ASAR. Really really does not want to
       // fork when the file is in the ASAR.
       'packages/server-starter/**',
+
+      // For prisma
+      'node_modules/@prisma/engines/migration-engine*',
+      'node_modules/@prisma/engines/query*',
+      'node_modules/@prisma/engines/libquery*',
+
+      // start prisma/build
+      // {
+      //   from: 'website/node_modules/prisma/package.json',
+      //   to: 'node_modules/prisma/package.json',
+      // },
+      // {
+      //   from: 'website/node_modules/prisma/build',
+      //   to: 'node_modules/prisma/build',
+      // },
+      'node_modules/prisma/package.json',
+      'node_modules/prisma/build/index.js',
+      'node_modules/prisma/build/prisma_fmt_build_bg.wasm',
+
+      // {
+      //   from: 'website/node_modules/prisma/build/index.js',
+      //   to: 'node_modules/prisma/build/index.js',
+      // },
+      // {
+      //   from: 'website/node_modules/prisma/build/prisma_fmt_build_bg.wasm',
+      //   to: 'node_modules/prisma/build/prisma_fmt_build_bg.wasm',
+      // },
+      // end prisma/build
+
+      {
+        from: 'website/.next/standalone/node_modules/.prisma',
+        to: 'node_modules/.prisma',
+      },
+      {
+        from: 'website/.next/standalone/node_modules/@prisma/client',
+        to: 'node_modules/@prisma/client',
+      },
+
+      // start prisma schema and migrations
+      {
+        from: 'website/prisma/schema.prisma',
+        to: 'prisma/schema.prisma',
+      },
+      {
+        from: 'website/prisma/migrations',
+        to: 'prisma/migrations',
+      },
+      // end prisma schema and migrations
+
+      // {
+      //   from: 'website/node_modules/.prisma',
+      //   to: 'node_modules/.prisma',
+      // },
     ],
     extraMetadata: {
       version: getVersion(),

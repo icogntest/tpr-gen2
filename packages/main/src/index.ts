@@ -1,15 +1,29 @@
+// `import.meta.env` provided by Vite. Set to `process.env.NODE_ENV` since we
+// expect it to be there.
+
 import {app} from 'electron';
 import './security-restrictions';
 import {restoreOrCreateWindow} from '/@/mainWindow';
 import {platform} from 'node:process';
+import fs from 'node:fs';
+import path from 'node:path';
 
-const appPath = app.getAppPath();
-console.log(`appPath:"${appPath}"`);
+const volumePath = path.join(app.getPath('userData'), 'volume');
+console.log(`volumePath:${volumePath}`);
+
+if (!fs.existsSync(volumePath)) {
+  fs.mkdirSync(volumePath);
+}
 
 /**
  * Prevent electron from running multiple instances.
  */
 const isSingleInstance = app.requestSingleInstanceLock();
+console.log(`isSingleInstance:${isSingleInstance}`);
+
+process.env.NODE_ENV = import.meta.env.MODE;
+console.log(`process.env.NODE_ENV:${process.env.NODE_ENV}`);
+
 if (!isSingleInstance) {
   app.quit();
   process.exit(0);

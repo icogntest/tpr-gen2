@@ -57,6 +57,7 @@
     "vue-tsc": "1.6.5"
   },
   "dependencies": {
+    "@prisma/engines": "^4.15.0",
     "electron-updater": "5.3.0"
   },
   "packageManager": "yarn@3.5.1"

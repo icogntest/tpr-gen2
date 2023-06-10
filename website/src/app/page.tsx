@@ -3,6 +3,7 @@ import isEnvElectron from '@/util/isEnvElectron';
 export default function Home() {
   return (
     <main>
+      <div>{`volumePath:${process.env.VOLUME_PATH}`}</div>
       <div>{process.env.TPRGEN_VOLUME_ROOT}</div>
       <div>{process.env.DOG}</div>
       <div>In home</div>
