@@ -104,7 +104,10 @@ module.exports = async function () {
       console.log('\nafterPack, removing certain files...');
       // TODO: probably need to revisit this, especially when packing or for
       // different operating systems.
-      const filesToDelete = ['resources/node_modules/.prisma/client/query_engine-windows.dll.node'];
+      const filesToDelete = [
+        'resources/node_modules/.prisma/client/query_engine-windows.dll.node',
+        'resources/standalone-website/node_modules/.prisma/client/query_engine-windows.dll.node',
+      ];
 
       filesToDelete.forEach(file => {
         const resolvedFile = path.join(context.appOutDir, file);

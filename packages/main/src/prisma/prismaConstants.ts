@@ -65,6 +65,18 @@ export const qePath = path.join(
   platformToExecutables[platformName].queryEngine,
 );
 
+export const prismaEnvVars = {
+  DATABASE_URL: dbUrl,
+  PRISMA_MIGRATION_ENGINE_BINARY: mePath,
+  PRISMA_QUERY_ENGINE_LIBRARY: qePath,
+
+  // Prisma apparently needs a valid path for the format and introspection binaries, even though
+  // we don't use them. So we just point them to the query engine binary. Otherwise, we get
+  // prisma:  Error: ENOTDIR: not a directory, unlink '/some/path/electron-prisma-trpc-example/packed/mac-arm64/ElectronPrismaTrpcExample.app/Contents/Resources/app.asar/node_modules/@prisma/engines/prisma-fmt-darwin-arm64'
+  PRISMA_FMT_BINARY: qePath,
+  PRISMA_INTROSPECTION_ENGINE_BINARY: qePath,
+};
+
 export const prismaPath = path.join(extraResourcesPath, 'node_modules/prisma/build/index.js');
 
 export interface Migration {

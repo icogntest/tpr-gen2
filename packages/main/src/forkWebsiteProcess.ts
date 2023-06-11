@@ -2,6 +2,7 @@ import {app} from 'electron';
 import {fork} from 'node:child_process';
 import {join, dirname} from 'node:path';
 import processManager from './processManager';
+import {prismaEnvVars} from './prisma/prismaConstants';
 
 function forkWebsiteProcess() {
   const appPathDirName = dirname(app.getAppPath());
@@ -11,6 +12,7 @@ function forkWebsiteProcess() {
     cwd: join(appPathDirName, 'standalone-website/website'),
     env: {
       ...process.env,
+      ...prismaEnvVars,
       IS_ELECTRON: 'true',
       VOLUME_PATH: volumePath,
     },
