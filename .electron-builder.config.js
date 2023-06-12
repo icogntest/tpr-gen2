@@ -1,6 +1,12 @@
 const fs = require('fs-extra');
 const path = require('node:path');
 
+// Note: swapped to v24 of electron-builder so that there is an option to
+// exclude langauges other than en-US. This saves 20+ MB. However, v24 is not
+// considered the stable version, so if there is ever a problem for some reason,
+// can swap back to v23 and add code to manually delete the other langauge
+// `.pak` files.
+
 /**
  * TODO: Rewrite this config to ESM
  * But currently electron-builder doesn't support ESM configs
@@ -19,6 +25,7 @@ module.exports = async function () {
       output: 'dist',
       buildResources: 'buildResources',
     },
+    electronLanguages: 'en-US',
     files: ['packages/**/dist/**'],
     extraResources: [
       // Have to put this in extraResources and lead with `app/` so we can have
