@@ -23,7 +23,7 @@ jobs:
           # cache: 'npm'
 
       # - run: npm ci
-      - run: yarn --frozen-lockfile
+      - run: yarn --immutable
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
 
