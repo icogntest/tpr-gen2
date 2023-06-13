@@ -26,6 +26,7 @@ jobs:
       - run: yarn --immutable
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+      - run: yarn --cwd website run prisma:generate
 
       # - run: npm run typecheck --if-present
       - run: yarn typecheck
