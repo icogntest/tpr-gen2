@@ -63,6 +63,13 @@ async function runBuild() {
   await buildNext();
   console.log('AFTER BUILD NEXT');
 
+  // Minify
+  // if (shouldShrink) {
+  //   console.log('BEFORE SHRINK STANDALONE OUTPUT');
+  //   // do shrink-next-standalone.mjs here
+  //   console.log('AFTER SHRINK STANDALONE OUTPUT');
+  // }
+
   // Manually edit the .env file which gets generated?
   updateWebsiteEnv();
 }
