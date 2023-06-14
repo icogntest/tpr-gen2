@@ -5,6 +5,11 @@ import processManager from './processManager';
 import {prismaEnvVars} from './prisma/prismaConstants';
 
 function forkWebsiteProcess() {
+  // Remove once forks are working for testing.
+  // eslint-disable-next-line
+  if (true) {
+    return;
+  }
   const appPathDirName = dirname(app.getAppPath());
   const volumePath = join(app.getPath('userData'), 'volume');
 
