@@ -1,6 +1,5 @@
 import {app, BrowserWindow, session} from 'electron';
-import {join, resolve, dirname} from 'node:path';
-import {fork} from 'node:child_process';
+import {join, resolve} from 'node:path';
 
 async function createWindow() {
   const browserWindow = new BrowserWindow({
@@ -52,33 +51,6 @@ async function createWindow() {
 
     await browserWindow.loadURL(url);
   } else {
-    const volumePath = join(app.getPath('userData'), 'volume', 'app.db');
-    // export const dbPath = path.join(app.getPath('userData'), 'volume', 'app.db');
-
-    // console.log('appPath');
-    // console.log(app.getAppPath());
-    const appPathDirName = dirname(app.getAppPath());
-    // console.log('appPathDirName');
-    // console.log(appPathDirName);
-    // console.log('');
-
-    // const childProc = fork('server.js', [], {
-    // eslint-disable-next-line
-    if (false) {
-      fork('server.js', [], {
-        cwd: join(appPathDirName, 'standalone-website/website'),
-        env: {
-          ...process.env,
-          IS_ELECTRON: 'true',
-          VOLUME_PATH: volumePath,
-        },
-      });
-    }
-
-    // childProc.on('message', function (message) {
-    //   console.log('Message from Child process : ' + message);
-    // });
-
     /**
      * Load from the local file system for production and test.
      *

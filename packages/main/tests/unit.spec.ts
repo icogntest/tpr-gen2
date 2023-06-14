@@ -26,6 +26,10 @@ vi.mock('electron', () => {
     getAppPath(): string {
       return '';
     },
+    // Can add getPath, etc. when needed.
+    // getPath(): string {
+    //   return '';
+    // },
   };
 
   return {BrowserWindow: bw, app};
