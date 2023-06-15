@@ -11,6 +11,9 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  // Manually kill the child processes. It hangs when trying to close on linux
+  // in GitHub Actions otherwise. This is specifically caused by the website
+  // server (not from running prisma on startup).
   await electronApp.evaluate(async ({ipcMain}) => {
     // This runs in the main Electron process, parameter here is always
     // the result of the require('electron') in the main app script.

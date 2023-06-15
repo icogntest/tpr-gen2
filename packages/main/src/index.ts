@@ -29,6 +29,8 @@ if (!isSingleInstance) {
 }
 app.on('second-instance', restoreOrCreateWindow);
 
+// Need this so the CI linux e2e tests don't hang while trying to close
+// Electron.
 if (process.env.IS_TEST) {
   ipcMain.on('kill-child-processes', () => {
     processManager.killAll();
@@ -58,11 +60,9 @@ app.on('activate', restoreOrCreateWindow);
 async function onAppReady() {
   await prepareDb();
 
-  // TODO: maybe show a loading window if actually need to run migrations?
-  // eslint-disable-next-line
-  // if (false) {
+  // TODO: maybe show a loading window if actually need to run migrations? This
+  // will probably make the e2e tests harder.
   forkWebsiteProcess();
-  // }
 
   restoreOrCreateWindow();
 }
