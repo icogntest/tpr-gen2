@@ -72,7 +72,7 @@ async function runBuild() {
   // }
 
   // Manually edit the .env file which gets generated?
-  // updateWebsiteEnv();
+  updateWebsiteEnv();
 }
 
 runBuild();

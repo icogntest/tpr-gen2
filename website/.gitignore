@@ -45,5 +45,5 @@ next-env.d.ts
 !.yarn/versions
 
 # For prisma
-.env
+# .env
 prisma/dev.db
