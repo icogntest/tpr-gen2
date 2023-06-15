@@ -50,10 +50,16 @@ app.on('window-all-closed', () => {
 app.on('activate', restoreOrCreateWindow);
 
 async function onAppReady() {
-  await prepareDb();
+  // eslint-disable-next-line
+  if (false) {
+    await prepareDb();
+  }
 
   // TODO: maybe show a loading window if actually need to run migrations?
-  forkWebsiteProcess();
+  // eslint-disable-next-line
+  if (false) {
+    forkWebsiteProcess();
+  }
 
   restoreOrCreateWindow();
 }
