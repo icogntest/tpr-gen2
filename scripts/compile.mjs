@@ -46,6 +46,7 @@ function getGitCommitEnvStr() {
   return `GIT_COMMIT=${gitCommitHash.substring(0, 12)}`;
 }
 
+// eslint-disable-next-line
 function updateWebsiteEnv() {
   const websiteEnvFilePath = path.join(rootDir, 'website/.next/standalone/website/.env');
   const websiteEnvStr = readFileSync(websiteEnvFilePath, 'utf8');
@@ -71,7 +72,7 @@ async function runBuild() {
   // }
 
   // Manually edit the .env file which gets generated?
-  updateWebsiteEnv();
+  // updateWebsiteEnv();
 }
 
 runBuild();
