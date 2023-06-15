@@ -1,8 +1,5 @@
-// `import.meta.env` provided by Vite. Set to `process.env.NODE_ENV` since we
-// expect it to be there.
-process.env.NODE_ENV = import.meta.env.MODE;
-console.log(`process.env.NODE_ENV:${process.env.NODE_ENV}`);
-
+// Note: it is important that `setEnv` be the very first import.
+import './setEnv';
 import {app} from 'electron';
 import './security-restrictions';
 import {restoreOrCreateWindow} from '/@/mainWindow';
@@ -57,10 +54,10 @@ async function onAppReady() {
 
   // Remove once forks are working for testing.
   // eslint-disable-next-line
-  if (false) {
-    // TODO: maybe show a loading window if actually need to run migrations?
-    forkWebsiteProcess();
-  }
+  // if (false) {
+  // TODO: maybe show a loading window if actually need to run migrations?
+  forkWebsiteProcess();
+  // }
 
   restoreOrCreateWindow();
 }

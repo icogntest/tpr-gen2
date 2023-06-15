@@ -1,25 +1,31 @@
-import {app} from 'electron';
 import {fork} from 'node:child_process';
-import {join, dirname} from 'node:path';
 import processManager from './processManager';
 import {prismaEnvVars} from './prisma/prismaConstants';
+import {serverJsDir, volumeDir} from './paths';
+// import path from 'node:path';
+// import fs from 'node:fs';
 
 function forkWebsiteProcess() {
-  // Remove once forks are working for testing.
-  // eslint-disable-next-line
-  if (true) {
+  if (process.env.NODE_ENV === 'development') {
+    // Server is run separately during development.
     return;
   }
-  const appPathDirName = dirname(app.getAppPath());
-  const volumePath = join(app.getPath('userData'), 'volume');
+
+  // Need to build the website as part of the e2e test.
+
+  // if (fs.existsSync(path.join(serverJsDir, 'server.js'))) {
+  //   throw new Error('DOES EXIST');
+  // } else {
+  //   throw new Error('DOES NOT EXIST');
+  // }
 
   const serverProcess = fork('server.js', [], {
-    cwd: join(appPathDirName, 'standalone-website/website'),
+    cwd: serverJsDir,
     env: {
       ...process.env,
       ...prismaEnvVars,
       IS_ELECTRON: 'true',
-      VOLUME_PATH: volumePath,
+      VOLUME_PATH: volumeDir,
     },
   });
 
