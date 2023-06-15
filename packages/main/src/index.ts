@@ -52,12 +52,8 @@ app.on('activate', restoreOrCreateWindow);
 async function onAppReady() {
   await prepareDb();
 
-  // Remove once forks are working for testing.
-  // eslint-disable-next-line
-  // if (false) {
   // TODO: maybe show a loading window if actually need to run migrations?
   forkWebsiteProcess();
-  // }
 
   restoreOrCreateWindow();
 }
