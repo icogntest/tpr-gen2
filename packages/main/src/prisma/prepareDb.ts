@@ -1,15 +1,16 @@
-import {app} from 'electron';
 import fs from 'node:fs';
 import path from 'node:path';
 import type {Migration} from './prismaConstants';
 import {dbPath, dbUrl, latestMigration} from './prismaConstants';
 import {prisma, runPrismaCommand} from './prisma';
+import {prismaSchemaPath} from '../paths';
 
 async function prepareDb() {
   console.log(`process.env.NODE_ENV:${process.env.NODE_ENV}`);
-  if (process.env.NODE_ENV !== 'production') {
-    return;
-  }
+  // if (process.env.NODE_ENV !== 'production') {
+  //   return;
+  // }
+  // throw new Error('asdfhdsifo');
 
   let needsMigration = false;
 
@@ -22,6 +23,7 @@ async function prepareDb() {
     // prisma for whatever reason has trouble if the database file does not exist yet.
     // So just touch it here
 
+    fs.mkdirSync(path.dirname(dbPath), {recursive: true}); // mkdirp
     fs.closeSync(fs.openSync(dbPath, 'w'));
   } else {
     try {
@@ -42,7 +44,8 @@ async function prepareDb() {
       //   'schema.prisma',
       // );
 
-      const schemaPath = path.join(app.getAppPath(), '../prisma/schema.prisma');
+      // const schemaPath = path.join(app.getAppPath(), '../prisma/schema.prisma');
+      const schemaPath = prismaSchemaPath;
 
       console.log(`Needs a migration. Running prisma migrate with schema path ${schemaPath}`);
 

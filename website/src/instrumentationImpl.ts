@@ -33,14 +33,15 @@ if (process.env.NODE_ENV === 'production') {
     throw new Error('Failed to determine git commit hash.');
   }
 
-  const dotenvPath = path.resolve(path.join(rootDir, 'env/.env'));
+  // Put in DATABASE_URL from here and not the website .env file.
+  process.env.DATABASE_URL = 'file:' + path.join(rootDir, 'volume/db/app.db');
 
+  const dotenvPath = path.resolve(path.join(rootDir, 'env/.env'));
   const dotenvFiles = [
     // `${dotenvPath}.development.local`,
     `${dotenvPath}.development`,
     dotenvPath,
   ];
-
   dotenvFiles.forEach((dotenvFile: string) => {
     if (fs.existsSync(dotenvFile)) {
       require('dotenv').config({

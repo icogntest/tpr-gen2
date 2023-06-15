@@ -1,9 +1,11 @@
 import path from 'node:path';
-import {app} from 'electron';
+// import {app} from 'electron';
+import {nodeModulesDir, volumeDir} from '../paths';
 
 export const isDev = process.env.NODE_ENV === 'development';
 // export const dbPath = path.join(app.getPath('userData'), 'app.db');
-export const dbPath = path.join(app.getPath('userData'), 'volume', 'app.db');
+
+export const dbPath = path.join(volumeDir, 'db/app.db');
 
 // export const dbUrl = isDev ? process.env.DATABASE_URL : 'file:' + dbPath;
 export const dbUrl =
@@ -26,24 +28,22 @@ export const platformToExecutables: {
   };
 } = {
   win32: {
-    migrationEngine: 'node_modules/@prisma/engines/migration-engine-windows.exe',
-    queryEngine: 'node_modules/@prisma/engines/query_engine-windows.dll.node',
+    migrationEngine: '@prisma/engines/migration-engine-windows.exe',
+    queryEngine: '@prisma/engines/query_engine-windows.dll.node',
   },
   linux: {
-    migrationEngine: 'node_modules/@prisma/engines/migration-engine-debian-openssl-1.1.x',
-    queryEngine: 'node_modules/@prisma/engines/libquery_engine-debian-openssl-1.1.x.so.node',
+    migrationEngine: '@prisma/engines/migration-engine-debian-openssl-1.1.x',
+    queryEngine: '@prisma/engines/libquery_engine-debian-openssl-1.1.x.so.node',
   },
   darwin: {
-    migrationEngine: 'node_modules/@prisma/engines/migration-engine-darwin',
-    queryEngine: 'node_modules/@prisma/engines/libquery_engine-darwin.dylib.node',
+    migrationEngine: '@prisma/engines/migration-engine-darwin',
+    queryEngine: '@prisma/engines/libquery_engine-darwin.dylib.node',
   },
   darwinArm64: {
-    migrationEngine: 'node_modules/@prisma/engines/migration-engine-darwin-arm64',
-    queryEngine: 'node_modules/@prisma/engines/libquery_engine-darwin-arm64.dylib.node',
+    migrationEngine: '@prisma/engines/migration-engine-darwin-arm64',
+    queryEngine: '@prisma/engines/libquery_engine-darwin-arm64.dylib.node',
   },
 };
-// const extraResourcesPath = app.getAppPath().replace('app.asar', ''); // impacted by extraResources setting in electron-builder.yml
-const extraResourcesPath = path.dirname(app.getAppPath()); // impacted by extraResources setting in electron-builder.yml
 
 function getPlatformName(): string {
   const isDarwin = process.platform === 'darwin';
@@ -57,13 +57,10 @@ function getPlatformName(): string {
 const platformName = getPlatformName();
 
 export const mePath = path.join(
-  extraResourcesPath,
+  nodeModulesDir,
   platformToExecutables[platformName].migrationEngine,
 );
-export const qePath = path.join(
-  extraResourcesPath,
-  platformToExecutables[platformName].queryEngine,
-);
+export const qePath = path.join(nodeModulesDir, platformToExecutables[platformName].queryEngine);
 
 export const prismaEnvVars = {
   DATABASE_URL: dbUrl,
@@ -77,7 +74,7 @@ export const prismaEnvVars = {
   PRISMA_INTROSPECTION_ENGINE_BINARY: qePath,
 };
 
-export const prismaPath = path.join(extraResourcesPath, 'node_modules/prisma/build/index.js');
+export const prismaPath = path.join(nodeModulesDir, 'prisma/build/index.js');
 
 export interface Migration {
   id: string;

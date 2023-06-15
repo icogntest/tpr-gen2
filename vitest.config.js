@@ -17,6 +17,9 @@ const config = {
      */
     testTimeout: 30_000,
     hookTimeout: 30_000,
+    // Add env variables to indicate it is a test so we can resolve paths
+    // correctly.
+    setupFiles: ['scripts/test-env.mjs'],
   },
 };
 
