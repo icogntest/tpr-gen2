@@ -1,6 +1,6 @@
 // Note: it is important that `setEnv` be the very first import.
 import './setEnv';
-import {app} from 'electron';
+import {app, ipcMain} from 'electron';
 import './security-restrictions';
 import {restoreOrCreateWindow} from '/@/mainWindow';
 import {platform} from 'node:process';
@@ -29,6 +29,12 @@ if (!isSingleInstance) {
 }
 app.on('second-instance', restoreOrCreateWindow);
 
+if (process.env.IS_TEST) {
+  ipcMain.on('kill-child-processes', () => {
+    processManager.killAll();
+  });
+}
+
 /**
  * Disable Hardware Acceleration to save more system resources.
  */
@@ -54,9 +60,9 @@ async function onAppReady() {
 
   // TODO: maybe show a loading window if actually need to run migrations?
   // eslint-disable-next-line
-  if (false) {
-    forkWebsiteProcess();
-  }
+  // if (false) {
+  forkWebsiteProcess();
+  // }
 
   restoreOrCreateWindow();
 }

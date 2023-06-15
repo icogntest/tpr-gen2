@@ -11,6 +11,12 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  await electronApp.evaluate(async ({ipcMain}) => {
+    // This runs in the main Electron process, parameter here is always
+    // the result of the require('electron') in the main app script.
+    ipcMain.emit('kill-child-processes');
+  });
+
   await electronApp.close();
 });
 
