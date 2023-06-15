@@ -31,7 +31,7 @@ jobs:
       # - run: yarn test:preload
       # - run: yarn test:renderer
       - run: yarn build:website
-      - run: ls website/.next
+      - run: ls website/.next/standalone
 
       # # I ran into problems trying to run an electron window in ubuntu due to a missing graphics server.
       # # That's why this special command for Ubuntu is here
