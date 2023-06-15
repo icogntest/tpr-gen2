@@ -14,8 +14,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # os: [ windows-latest, ubuntu-latest, macos-latest ]
-        os: [ windows-latest]
+        os: [ windows-latest, ubuntu-latest, macos-latest ]
+        # os: [ windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -27,11 +27,9 @@ jobs:
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
       - run: yarn --cwd website run prisma:generate
-      # - run: yarn test:main
-      # - run: yarn test:preload
-      # - run: yarn test:renderer
-      # - run: yarn build:website
-      # - run: ls website/.next/standalone
+      - run: yarn test:main
+      - run: yarn test:preload
+      - run: yarn test:renderer
 
       # I ran into problems trying to run an electron window in ubuntu due to a missing graphics server.
       # That's why this special command for Ubuntu is here
