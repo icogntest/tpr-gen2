@@ -6,10 +6,15 @@
   "workspaces": [
     "website"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/icogn/tpr-gen2.git",
+    "directory": "packages/react-dom"
+  },
   "author": {
-    "email": "kozackunisoft@gmail.com",
-    "name": "Alex Kozack",
-    "url": "https://kozack.me"
+    "email": "iico7no2@gmail.com",
+    "name": "Isaac",
+    "url": "https://github.com/icogn"
   },
   "main": "packages/main/dist/index.cjs",
   "scripts": {
