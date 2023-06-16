@@ -9,6 +9,7 @@ import path from 'node:path';
 import forkWebsiteProcess from './forkWebsiteProcess';
 import processManager from './processManager';
 import prepareDb from './prisma/prepareDb';
+import {autoUpdater} from 'electron-updater';
 
 const volumePath = path.join(app.getPath('userData'), 'volume');
 console.log(`volumePath:${volumePath}`);
@@ -60,11 +61,23 @@ app.on('activate', restoreOrCreateWindow);
 async function onAppReady() {
   await prepareDb();
 
+  checkForUpdates();
+
   // TODO: maybe show a loading window if actually need to run migrations? This
   // will probably make the e2e tests harder.
   forkWebsiteProcess();
 
   restoreOrCreateWindow();
+}
+
+function checkForUpdates() {
+  if (process.env.NODE_ENV === 'production') {
+    try {
+      autoUpdater.checkForUpdatesAndNotify();
+    } catch (e) {
+      console.error('Failed check and install updates:', e);
+    }
+  }
 }
 
 /**
@@ -107,14 +120,22 @@ app
  * if you compile production app without publishing it to distribution server.
  * Like `npm run compile` does. It's ok 😅
  */
-if (import.meta.env.PROD) {
-  app
-    .whenReady()
-    .then(() => import('electron-updater'))
-    .then(module => {
-      const autoUpdater =
-        module.autoUpdater || (module.default.autoUpdater as (typeof module)['autoUpdater']);
-      return autoUpdater.checkForUpdatesAndNotify();
-    })
-    .catch(e => console.error('Failed check and install updates:', e));
-}
+// if (import.meta.env.PROD) {
+//   app
+//     .whenReady()
+//     .then(() => import('electron-updater'))
+//     .then(module => {
+//       const autoUpdater =
+//         module.autoUpdater || (module.default.autoUpdater as (typeof module)['autoUpdater']);
+//       return autoUpdater.checkForUpdatesAndNotify();
+//     })
+//     .catch(e => console.error('Failed check and install updates:', e));
+// }
+
+// Dynamic import of 'electron-updater' not working when bundled in asar.
+// There is some discussion here:
+// https://github.com/electron/asar/issues/249
+// https://github.com/electron/electron/pull/37535
+// Changed to be a static import so it would work. The only real difference is
+// that we import it during development, but since we aren't using it, this
+// doesn't really matter.
