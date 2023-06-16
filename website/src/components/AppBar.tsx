@@ -1,6 +1,6 @@
 import SignOutButton from './SignOutButton';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import {getServerSession} from 'next-auth';
+import {authOptions} from '@/app/api/auth/[...nextauth]/route';
 import asSyncComponent from './asSyncComponent';
 
 const AppBar = asSyncComponent(async function AppBar() {
@@ -18,7 +18,7 @@ const AppBar = asSyncComponent(async function AppBar() {
         padding: '16px',
       }}
     >
-      <div style={{ marginRight: 'auto' }}>AppBar</div>
+      <div style={{marginRight: 'auto'}}>AppBar</div>
       <SignOutButton user={session?.user} />
     </div>
   );
