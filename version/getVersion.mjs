@@ -14,3 +14,5 @@ const {version} = JSON.parse(fs.readFileSync(path.join(rootDir, 'package.json'))
 export function getVersion() {
   return version;
 }
+
+//
