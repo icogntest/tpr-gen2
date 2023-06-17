@@ -21,6 +21,8 @@ module.exports = async function () {
   const {getVersion} = await import('./version/getVersion.mjs');
 
   return {
+    appId: 'com.tprandomizer.generator',
+    productName: 'TPR Generator',
     directories: {
       output: 'dist',
       buildResources: 'buildResources',
