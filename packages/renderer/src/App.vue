@@ -15,7 +15,7 @@ const APP_VERSION = import.meta.env.VITE_APP_VERSION;
 
   <p>
     <!-- Example how to inject current app version to UI -->
-    App version xx: {{ APP_VERSION }}
+    App version xy: {{ APP_VERSION }}
   </p>
 
   <p>
