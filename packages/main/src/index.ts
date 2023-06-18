@@ -59,13 +59,15 @@ app.on('window-all-closed', () => {
 app.on('activate', restoreOrCreateWindow);
 
 async function onAppReady() {
-  await prepareDb();
+  if (process.env.NODE_ENV === 'production') {
+    await prepareDb();
 
-  checkForUpdates();
+    checkForUpdates();
 
-  // TODO: maybe show a loading window if actually need to run migrations? This
-  // will probably make the e2e tests harder.
-  forkWebsiteProcess();
+    // TODO: maybe show a loading window if actually need to run migrations? This
+    // will probably make the e2e tests harder.
+    forkWebsiteProcess();
+  }
 
   restoreOrCreateWindow();
 }

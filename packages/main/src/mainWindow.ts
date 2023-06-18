@@ -37,9 +37,9 @@ async function createWindow() {
     /**
      * Load from the Vite dev server for development.
      */
-    // await browserWindow.loadURL(import.meta.env.VITE_DEV_SERVER_URL);
+    await browserWindow.loadURL(import.meta.env.VITE_DEV_SERVER_URL);
 
-    const url = 'http://localhost:3000';
+    // const url = 'http://localhost:3000';
 
     // Set cookie during development so the server can know whether it is
     // serving a browser client or electron client. This is used during
@@ -47,10 +47,15 @@ async function createWindow() {
     // a single Next server. If this becomes too hard to manage, we can always
     // change it such that you have to pick which one you want to develop for
     // when you start the server.
-    const cookie = {url, name: 'electron-development', value: 'electron-development'};
+    // const cookie = {url, name: 'electron-development', value: 'electron-development'};
+    const cookie = {
+      url: 'http://localhost:3000',
+      name: 'electron-development',
+      value: 'electron-development',
+    };
     await session.defaultSession.cookies.set(cookie);
 
-    await browserWindow.loadURL(url);
+    // await browserWindow.loadURL(url);
   } else {
     /**
      * Load from the local file system for production and test.

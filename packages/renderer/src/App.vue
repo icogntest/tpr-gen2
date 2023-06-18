@@ -7,6 +7,13 @@ const APP_VERSION = import.meta.env.VITE_APP_VERSION;
 </script>
 
 <template>
+  <div>
+    <iframe
+      id="contentIframe"
+      src="http://localhost:3000"
+    ></iframe>
+  </div>
+
   <img
     alt="Vue logo"
     src="../assets/logo.svg"
@@ -15,7 +22,7 @@ const APP_VERSION = import.meta.env.VITE_APP_VERSION;
 
   <p>
     <!-- Example how to inject current app version to UI -->
-    App version xy: {{ APP_VERSION }}
+    App version: {{ APP_VERSION }}
   </p>
 
   <p>
@@ -58,8 +65,18 @@ const APP_VERSION = import.meta.env.VITE_APP_VERSION;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin: 60px auto;
-  max-width: 700px;
+  /* margin: 60px auto; */
+  margin: 0;
+  width: 100%;
+  /* max-width: 700px; */
+}
+
+#contentIframe {
+  width: 100%;
+  height: 300px;
+  border: none;
+  outline: none;
+  margin: none;
 }
 
 fieldset {

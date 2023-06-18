@@ -2,7 +2,7 @@
 
 process.env.NODE_ENV = 'development';
 
-import {build} from 'vite';
+import {build, createServer} from 'vite';
 import electronPath from 'electron';
 import {spawn} from 'child_process';
 import {execa} from 'execa';
@@ -20,9 +20,9 @@ const logLevel = 'warn';
  * @param {import('vite').ViteDevServer} watchServer Renderer watch server instance.
  * Needs to set up `VITE_DEV_SERVER_URL` environment variable from {@link import('vite').ViteDevServer.resolvedUrls}
  */
-function setupMainPackageWatcher() {
-  // process.env.VITE_DEV_SERVER_URL = resolvedUrls.local[0];
-  process.env.VITE_DEV_SERVER_URL = 'http://localhost:3000';
+function setupMainPackageWatcher({resolvedUrls}) {
+  process.env.VITE_DEV_SERVER_URL = resolvedUrls.local[0];
+  // process.env.VITE_DEV_SERVER_URL = 'http://localhost:3000';
 
   /** @type {ChildProcess | null} */
   let electronApp = null;
@@ -71,7 +71,7 @@ function setupMainPackageWatcher() {
  * @param {import('vite').ViteDevServer} watchServer Renderer watch server instance.
  * Required to access the web socket of the page. By sending the `full-reload` command to the socket, it reloads the web page.
  */
-function setupPreloadPackageWatcher() {
+function setupPreloadPackageWatcher({ws}) {
   return build({
     mode,
     logLevel,
@@ -83,12 +83,43 @@ function setupPreloadPackageWatcher() {
        */
       watch: {},
     },
-    // Disabled plugin which reloads the webpage when editing the preload
-    // script. This would be pretty involved to get working, and it is not worth
-    // it since you probably will never update the preload script (and if you do
-    // you can just reload the page manually).
+    plugins: [
+      {
+        name: 'reload-page-on-preload-package-change',
+        writeBundle() {
+          ws.send({
+            type: 'full-reload',
+          });
+        },
+      },
+    ],
   });
 }
+
+// /**
+//  * Setup watcher for `preload` package
+//  * On file changed it reload web page.
+//  * @param {import('vite').ViteDevServer} watchServer Renderer watch server instance.
+//  * Required to access the web socket of the page. By sending the `full-reload` command to the socket, it reloads the web page.
+//  */
+// function setupPreloadPackageWatcher() {
+//   return build({
+//     mode,
+//     logLevel,
+//     configFile: 'packages/preload/vite.config.js',
+//     build: {
+//       /**
+//        * Set to {} to enable rollup watcher
+//        * @see https://vitejs.dev/config/build-options.html#build-watch
+//        */
+//       watch: {},
+//     },
+//     // Disabled plugin which reloads the webpage when editing the preload
+//     // script. This would be pretty involved to get working, and it is not worth
+//     // it since you probably will never update the preload script (and if you do
+//     // you can just reload the page manually).
+//   });
+// }
 
 function startNextServer() {
   const execaOptions = {
@@ -105,8 +136,24 @@ function startNextServer() {
 async function dev() {
   startNextServer();
 
-  await setupPreloadPackageWatcher();
-  await setupMainPackageWatcher();
+  /**
+   * Dev server for Renderer package
+   * This must be the first,
+   * because the {@link setupMainPackageWatcher} and {@link setupPreloadPackageWatcher}
+   * depend on the dev server properties
+   */
+  const rendererWatchServer = await createServer({
+    mode,
+    logLevel,
+    configFile: 'packages/renderer/vite.config.js',
+  }).then(s => {
+    console.log('\n\ns is:');
+    console.log(s);
+    return s.listen();
+  });
+
+  await setupPreloadPackageWatcher(rendererWatchServer);
+  await setupMainPackageWatcher(rendererWatchServer);
 }
 
 dev();
