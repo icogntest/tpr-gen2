@@ -62,6 +62,8 @@ jobs:
           node-version: 18
           cache: 'yarn'
 
-      # - run: npm i prettier
-      # - run: npx prettier --check "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,json}"
+      # I think we add prettier so that we don't get a fatal error "Cache folder
+      # path is retrieved for yarn but doesn't exist on disk:
+      # /home/runner/work/tpr-gen2/tpr-gen2/.yarn/cache"
+      - run: yarn add prettier
       - run: yarn dlx prettier --check "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,json}"
