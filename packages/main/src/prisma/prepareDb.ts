@@ -4,6 +4,9 @@ import type {Migration} from './prismaConstants';
 import {dbPath, dbUrl, latestMigration} from './prismaConstants';
 import {prisma, runPrismaCommand} from './prisma';
 import {prismaSchemaPath} from '../paths';
+import basicEventEmitter from '../util/basicEventEmitter';
+
+export const dbPreparedEmitter = basicEventEmitter<boolean>();
 
 async function prepareDb() {
   console.log(`process.env.NODE_ENV:${process.env.NODE_ENV}`);
@@ -59,15 +62,18 @@ async function prepareDb() {
       });
       console.log('Migration done.');
 
+      dbPreparedEmitter.update(true);
+
       // seed
       // log.info("Seeding...");
       // await seed(prisma);
     } catch (e) {
+      dbPreparedEmitter.update(false);
       console.error(e);
-      process.exit(1);
     }
   } else {
     console.log('Does not need migration');
+    dbPreparedEmitter.update(true);
   }
 }
 

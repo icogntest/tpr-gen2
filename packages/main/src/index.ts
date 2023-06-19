@@ -63,7 +63,7 @@ async function onAppReady() {
   setupEventsIpc();
 
   if (process.env.NODE_ENV === 'production') {
-    await prepareDb();
+    prepareDb();
 
     checkForUpdates();
   }
