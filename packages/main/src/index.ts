@@ -74,11 +74,9 @@ async function onAppReady() {
 
 function checkForUpdates() {
   if (process.env.NODE_ENV === 'production') {
-    try {
-      autoUpdater.checkForUpdatesAndNotify();
-    } catch (e) {
+    autoUpdater.checkForUpdatesAndNotify().catch(e => {
       console.error('Failed check and install updates:', e);
-    }
+    });
   }
 }
 

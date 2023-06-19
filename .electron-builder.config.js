@@ -62,6 +62,8 @@ module.exports = async function () {
       'node_modules/@prisma/engines/migration-engine*',
       'node_modules/@prisma/engines/query*',
       'node_modules/@prisma/engines/libquery*',
+      'node_modules/@prisma/engines/package.json',
+      'node_modules/@prisma/engines/dist/index.js',
 
       // start prisma/build
       // {
