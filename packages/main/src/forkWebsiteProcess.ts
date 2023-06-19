@@ -11,14 +11,6 @@ function forkWebsiteProcess() {
     return;
   }
 
-  // Need to build the website as part of the e2e test.
-
-  // if (fs.existsSync(path.join(serverJsDir, 'server.js'))) {
-  //   throw new Error('DOES EXIST');
-  // } else {
-  //   throw new Error('DOES NOT EXIST');
-  // }
-
   const serverProcess = fork('server.js', [], {
     cwd: serverJsDir,
     env: {
