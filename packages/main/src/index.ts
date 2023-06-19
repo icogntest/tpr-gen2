@@ -64,7 +64,7 @@ async function onAppReady() {
 
     checkForUpdates();
 
-    //
+    //2
 
     // TODO: maybe show a loading window if actually need to run migrations? This
     // will probably make the e2e tests harder.
