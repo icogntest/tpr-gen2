@@ -10,6 +10,7 @@ import forkWebsiteProcess from './forkWebsiteProcess';
 import processManager from './processManager';
 import prepareDb from './prisma/prepareDb';
 import {autoUpdater} from 'electron-updater';
+import setupEventsIpc from './setupEventsIpc';
 
 const volumePath = path.join(app.getPath('userData'), 'volume');
 console.log(`volumePath:${volumePath}`);
@@ -59,15 +60,15 @@ app.on('window-all-closed', () => {
 app.on('activate', restoreOrCreateWindow);
 
 async function onAppReady() {
+  setupEventsIpc();
+
   if (process.env.NODE_ENV === 'production') {
     await prepareDb();
 
     checkForUpdates();
-
-    // TODO: maybe show a loading window if actually need to run migrations? This
-    // will probably make the e2e tests harder.
-    forkWebsiteProcess();
   }
+
+  forkWebsiteProcess();
 
   restoreOrCreateWindow();
 }

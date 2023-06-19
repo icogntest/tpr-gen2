@@ -2,11 +2,13 @@
 import ReactiveCounter from '/@/components/ReactiveCounter.vue';
 import ReactiveHash from '/@/components/ReactiveHash.vue';
 import ElectronVersions from '/@/components/ElectronVersions.vue';
+import ExampleComp from './components/ExampleComp.vue';
 
 const APP_VERSION = import.meta.env.VITE_APP_VERSION;
 </script>
 
 <template>
+  <example-comp />
   <div>
     <iframe
       id="contentIframe"
@@ -36,6 +38,7 @@ const APP_VERSION = import.meta.env.VITE_APP_VERSION;
     </a>
     .
   </p>
+
 
   <fieldset>
     <legend>Test Vue Reactivity</legend>
