@@ -18,3 +18,5 @@ dotenvFiles.forEach(dotenvFile => {
     });
   }
 });
+
+console.log('Ran test-env.mjs');
