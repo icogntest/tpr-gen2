@@ -3,6 +3,8 @@ import fs from 'fs-extra';
 import dotenv from 'dotenv';
 import getRootDir from './util/getRootDir.mjs';
 
+console.log('Running test-env.mjs...');
+
 const rootDir = getRootDir();
 
 const dotenvPath = path.resolve(path.join(rootDir, 'env/.env'));
