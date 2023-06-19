@@ -39,7 +39,6 @@ const APP_VERSION = import.meta.env.VITE_APP_VERSION;
     .
   </p>
 
-
   <fieldset>
     <legend>Test Vue Reactivity</legend>
     <reactive-counter />

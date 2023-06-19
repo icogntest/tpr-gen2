@@ -10,7 +10,6 @@ onMounted(() => {
     websiteReady.value = String(response);
   });
 });
-
 </script>
 
 <template>
