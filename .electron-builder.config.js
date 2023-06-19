@@ -20,9 +20,16 @@ const path = require('node:path');
 module.exports = async function () {
   const {getVersion} = await import('./version/getVersion.mjs');
 
+  // Note: the "name" in the root package.json seems to be used when creating
+  // the "updaterCacheDirName" in the app-update.yml (for example,
+  // "vite-electron-builder-updater"; seems to be the "name" + "-updater";
+  // location is "...AppData\Local\vite-electron-builder-updater"). It also
+  // controls the install location. For example,
+  // "...AppData\Local\Programs\vite-electron-builder" when the "name" is
+  // "vite-electron-builder".
   return {
     appId: 'com.tprandomizer.generator',
-    productName: 'TPR Generator',
+    productName: 'Twilight Princess Randomizer',
     directories: {
       output: 'dist',
       buildResources: 'buildResources',

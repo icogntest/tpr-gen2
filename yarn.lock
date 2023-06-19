@@ -7145,6 +7145,38 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tpr-generator@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "tpr-generator@workspace:."
+  dependencies:
+    "@types/node": 18.16.13
+    "@typescript-eslint/eslint-plugin": 5.59.6
+    "@typescript-eslint/parser": ^5.59.6
+    "@vitejs/plugin-vue": 4.2.3
+    "@vue/test-utils": 2.3.2
+    cross-env: 7.0.3
+    dotenv: ^16.1.4
+    electron: 25.1.0
+    electron-builder: 24.4.0
+    electron-updater: 5.3.0
+    eslint: 8.40.0
+    eslint-plugin-vue: 9.13.0
+    fs-extra: ^11.1.1
+    glob: ^10.2.7
+    happy-dom: 9.19.2
+    nano-staged: 0.8.0
+    playwright: 1.33.0
+    simple-git-hooks: 2.8.1
+    terser: ^5.17.7
+    typescript: 5.0.4
+    unplugin-auto-expose: 0.0.4
+    vite: 4.3.8
+    vitest: 0.31.1
+    vue: 3.3.4
+    vue-tsc: 1.6.5
+  languageName: unknown
+  linkType: soft
+
 "tr46@npm:~0.0.3":
   version: 0.0.3
   resolution: "tr46@npm:0.0.3"
@@ -7442,38 +7474,6 @@ __metadata:
   checksum: 690a8d6ad5a4001672290e9719e3107c86269bc45fe19f844758eecf502e59f8aa9631b19b839f6d3dea562334884d22d1eb95ae7c863032075a9212c889e116
   languageName: node
   linkType: hard
-
-"vite-electron-builder@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "vite-electron-builder@workspace:."
-  dependencies:
-    "@types/node": 18.16.13
-    "@typescript-eslint/eslint-plugin": 5.59.6
-    "@typescript-eslint/parser": ^5.59.6
-    "@vitejs/plugin-vue": 4.2.3
-    "@vue/test-utils": 2.3.2
-    cross-env: 7.0.3
-    dotenv: ^16.1.4
-    electron: 25.1.0
-    electron-builder: 24.4.0
-    electron-updater: 5.3.0
-    eslint: 8.40.0
-    eslint-plugin-vue: 9.13.0
-    fs-extra: ^11.1.1
-    glob: ^10.2.7
-    happy-dom: 9.19.2
-    nano-staged: 0.8.0
-    playwright: 1.33.0
-    simple-git-hooks: 2.8.1
-    terser: ^5.17.7
-    typescript: 5.0.4
-    unplugin-auto-expose: 0.0.4
-    vite: 4.3.8
-    vitest: 0.31.1
-    vue: 3.3.4
-    vue-tsc: 1.6.5
-  languageName: unknown
-  linkType: soft
 
 "vite-node@npm:0.31.1":
   version: 0.31.1

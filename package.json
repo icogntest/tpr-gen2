@@ -1,7 +1,7 @@
 {
-  "name": "vite-electron-builder",
+  "name": "tpr-generator",
   "description": "Secure boilerplate for Electron app based on Vite",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "private": true,
   "workspaces": [
     "website"
