@@ -1,46 +1,16 @@
 import {fork} from 'node:child_process';
-import processManager from './processManager';
-import {prismaEnvVars} from './prisma/prismaConstants';
-import {serverJsDir, volumeDir} from './paths';
+import processManager from '../processManager';
+import {prismaEnvVars} from '../prisma/prismaConstants';
+import {serverJsDir, volumeDir} from '../paths';
 import pingWebsiteProcess from './pingWebsiteProcess';
+import basicEventEmitter from '../util/basicEventEmitter';
 
-type SubscriptionCallback = (success: boolean) => void;
-
-enum WebsiteStatus {
-  PENDING,
-  SUCCESS,
-  FAILURE,
-}
-
-let listeners: SubscriptionCallback[] = [];
-let websiteStatus: WebsiteStatus = WebsiteStatus.PENDING;
-let listenersCalled = false;
-
-export function subscribeWebsiteReady(listener: SubscriptionCallback) {
-  if (listenersCalled) {
-    listener(websiteStatus === WebsiteStatus.SUCCESS);
-  } else {
-    listeners.push(listener);
-  }
-}
-
-function callListeners(newStatus: WebsiteStatus) {
-  websiteStatus = newStatus;
-  if (listenersCalled) {
-    return;
-  }
-  listenersCalled = true;
-  const listenersCopy = listeners.slice();
-  listeners = [];
-  listenersCopy.forEach(listener => {
-    listener(websiteStatus === WebsiteStatus.SUCCESS);
-  });
-}
+export const websiteReadyEmitter = basicEventEmitter<boolean>();
 
 function forkWebsiteProcess() {
   if (process.env.NODE_ENV === 'development') {
     // Server is run separately during development.
-    callListeners(WebsiteStatus.SUCCESS); // Act as if website is ready immediately
+    websiteReadyEmitter.update(true); // Act as if website is ready immediately
     return;
   }
 
@@ -59,7 +29,7 @@ function forkWebsiteProcess() {
   processManager.addChildProcess(serverProcess, 'next-server');
 
   serverProcess.on('exit', () => {
-    callListeners(WebsiteStatus.FAILURE);
+    websiteReadyEmitter.update(false);
   });
 
   if (serverProcess.stdout) {
@@ -71,8 +41,8 @@ function forkWebsiteProcess() {
         // ping website and wait until get response
         pingWebsiteProcess()
           .then(statusCode => {
-            console.log(`Website returned status code:${statusCode}`);
-            callListeners(WebsiteStatus.SUCCESS);
+            console.log(`Website returned status code: ${statusCode}`);
+            websiteReadyEmitter.update(true);
           })
           .catch(e => {
             console.log('Ping website failed.');

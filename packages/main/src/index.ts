@@ -6,7 +6,7 @@ import {restoreOrCreateWindow} from '/@/mainWindow';
 import {platform} from 'node:process';
 import fs from 'node:fs';
 import path from 'node:path';
-import forkWebsiteProcess from './forkWebsiteProcess';
+import forkWebsiteProcess from './website/forkWebsiteProcess';
 import processManager from './processManager';
 import prepareDb from './prisma/prepareDb';
 import {autoUpdater} from 'electron-updater';
