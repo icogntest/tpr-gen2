@@ -41,6 +41,8 @@
     "format": "npx prettier --write \"**/*.{js,mjs,cjs,ts,mts,cts,vue,json}\""
   },
   "devDependencies": {
+    "@types/js-yaml": "^4.0.5",
+    "@types/lodash.escaperegexp": "^4.1.7",
     "@types/node": "18.16.13",
     "@typescript-eslint/eslint-plugin": "5.59.6",
     "@typescript-eslint/parser": "^5.59.6",
@@ -67,7 +69,11 @@
     "vue-tsc": "1.6.5"
   },
   "dependencies": {
-    "electron-updater": "5.3.0"
+    "builder-util-runtime": "^9.2.1",
+    "electron-updater": "^5.3.0",
+    "js-yaml": "^4.1.0",
+    "lodash.escaperegexp": "^4.1.2",
+    "semver": "^7.5.2"
   },
   "packageManager": "yarn@3.5.1"
 }

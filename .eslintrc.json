@@ -47,5 +47,11 @@
         "avoidEscape": true
       }
     ]
+
+    // Custom added below:
+    // TODO: Need to revisit this file in its entirety.
+
+    // no-undef causing problems with Next build. Need to work eslint stuff in general.
+    // "no-undef": "error"
   }
 }

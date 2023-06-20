@@ -11,6 +11,7 @@ import processManager from './processManager';
 import prepareDb from './prisma/prepareDb';
 import {autoUpdater} from 'electron-updater';
 import setupEventsIpc from './setupEventsIpc';
+import {UpdateEndpoint, createCustomAppUpdater} from './updater/CustomAppUpdater';
 
 const volumePath = path.join(app.getPath('userData'), 'volume');
 console.log(`volumePath:${volumePath}`);
@@ -61,6 +62,16 @@ app.on('activate', restoreOrCreateWindow);
 
 async function onAppReady() {
   setupEventsIpc();
+
+  const b = app.getAppPath();
+  console.log(b);
+  const customAppUpdater = createCustomAppUpdater(UpdateEndpoint.stable);
+  const a = await customAppUpdater.checkForUpdates();
+  console.log(a);
+
+  // We want to specify what we want to target when we create the custom adapter.
+  // We need to create the customAppUpdater on command.
+  //
 
   if (process.env.NODE_ENV === 'production') {
     prepareDb();
