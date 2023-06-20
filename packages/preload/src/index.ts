@@ -27,5 +27,9 @@ export function askWebsiteReady(): Promise<boolean> {
   });
 }
 
+export function cancelAutoInstall() {
+  ipcRenderer.send('tpr:cancel-autoinstall');
+}
+
 export {sha256sum} from './nodeCrypto';
 export {versions} from './versions';
