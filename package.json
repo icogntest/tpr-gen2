@@ -1,7 +1,7 @@
 {
   "name": "tpr-generator",
   "description": "Twilight Princess Randomizer generator and patcher",
-  "version": "1.1.3-dev",
+  "version": "1.1.4-dev",
   "private": true,
   "workspaces": [
     "website"
