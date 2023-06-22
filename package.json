@@ -8,7 +8,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/icogn/tpr-gen2.git",
+    "url": "https://github.com/icogntest/tpr-gen2.git",
     "directory": "packages/react-dom"
   },
   "author": {
